@@ -136,6 +136,16 @@ thead th.pick .hs{background:rgba(0,0,0,.12)}
 .sinote{font-size:.8rem;color:var(--muted)}
 .sipick.need .siopts button{animation:pulse 1.8s ease-in-out 2}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 transparent}50%{box-shadow:0 0 0 4px var(--sec)}}
+.when{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--head);border-radius:12px;padding:14px 16px;margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.when h2{font-size:1.05rem}
+.whengrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;font-size:.88rem}
+.m .whengrid{grid-template-columns:1fr}
+.links{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.links h2{font-size:.8rem;font-family:var(--body);font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.linkrow{display:flex;flex-wrap:wrap;gap:6px}
+.linkrow a{font-size:.82rem;font-weight:600;color:var(--sec-fg);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 11px;text-decoration:none;display:inline-flex;gap:5px;align-items:center}
+.linkrow a:hover{border-color:var(--sec-fg)}
+thead th a.site{display:inline-block;margin-top:5px;font-family:var(--body);font-weight:600;font-size:.7rem;color:inherit;opacity:.9;text-decoration:underline;text-underline-offset:2px}
 /* swipe strip */
 .swipebar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--barh,52px));z-index:15;background:var(--bg);display:flex;align-items:center;gap:10px;padding-block:8px}
 .swipebar[hidden]{display:none!important}
@@ -181,6 +191,15 @@ thead th.pick .hs{background:rgba(0,0,0,.12)}
     <aside class="pickbox" id="pickbox" aria-live="polite"></aside>
   </section>
 
+  <section class="when" aria-labelledby="whenh">
+    <h2 id="whenh">Cover before or after pregnancy?</h2>
+    <div class="whengrid">
+      <div><b>Buy before you get pregnant.</b> Maternity cover starts only after the waiting period, counted from the day the policy starts. The delivery (hospital admission) must happen after that period ends.</div>
+      <div><b>Already pregnant?</b> None of these plans will pay for that delivery. Star Women Care (and Star Super Star’s Women Care option) can still cover the <b>baby</b> from birth if you buy between the 12th and 20th week and Star accepts the scan reports.</div>
+      <div><b>Buy this month and…</b> the row “Delivery covered from” in the chart shows the earliest month each plan would pay for the delivery.</div>
+    </div>
+  </section>
+  <section class="links" aria-labelledby="linksh"><h2 id="linksh">Official plan pages</h2><div class="linkrow" id="linkrow"></div></section>
   <div class="legend" id="legend"></div>
   <div class="swipebar" id="swipebar" hidden>
     <button type="button" class="navbtn prev" id="prev" aria-label="Previous plans"><svg class="i" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
@@ -217,7 +236,7 @@ thead th.pick .hs{background:rgba(0,0,0,.12)}
     <li>Aditya Birla maternity rider: <a href="https://healthstatic.policybazaar.com/health-insurance/Insurer_Document/ABHI/ActivOneMaternityCombo_Policywording.pdf" target="_blank" rel="noopener">policy wording</a></li>
     <li>ICICI, HDFC ERGO, Tata AIG maternity: <a href="https://joinditto.in/articles/health-insurance/popular-maternity-add-ons/" target="_blank" rel="noopener">Ditto</a> · <a href="https://healthstatic.policybazaar.com/health-insurance/Information/TATA-AIG/MediCare%20Select_Brochure.pdf" target="_blank" rel="noopener">Tata AIG brochure</a></li>
     <li>Claim data: <a href="https://joinditto.in/health-insurance/top-10-claim-settlement-ratio-health-insurance-companies/" target="_blank" rel="noopener">Ditto CSR ranking</a> (from IRDAI reports) · Hospital counts: insurer network lists Aug–Nov 2026 (<a href="https://healthstatic.policybazaar.com/health-insurance/Network_Lists/Niva_Bupa(Max)_Health_2026.pdf" target="_blank" rel="noopener">example</a>)</li>
-    <li>Premiums: Star Women Care rate chart in its <a href="https://healthstatic.policybazaar.com/health-insurance/Information/Star%20Health/Women%20Care%20Prospectus.pdf" target="_blank" rel="noopener">prospectus</a> (2 adults 18–35) · Star Super Star Zone B (Hyderabad) rates and maternity add-on in its <a href="https://healthstatic.policybazaar.com/health-insurance/Information/Star%20Health/SuperStar/Prospectus_SuperStar.pdf" target="_blank" rel="noopener">prospectus</a> · <a href="https://www.tataaig.com/s3/tata_aig_medicare_select_rate_chart_final_10b44c2d1c.pdf" target="_blank" rel="noopener">Tata AIG MediCare Select rate chart</a> (Zone B, ages 31 &amp; 33, floater + young-family discounts) · Niva Bupa, Care and Aditya Birla figures are published sample quotes from Ditto; others need a quote. Individual health insurance carries 0% GST from 22 Sep 2025.</li>
+    <li>Premiums: Star Women Care rate chart in its <a href="https://healthstatic.policybazaar.com/health-insurance/Information/Star%20Health/Women%20Care%20Prospectus.pdf" target="_blank" rel="noopener">prospectus</a> (2 adults 18–35; from the 2022 version, a newer version was released Oct 2026 so confirm the current premium) · Star Super Star Zone B (Hyderabad) rates and maternity add-on in its <a href="https://healthstatic.policybazaar.com/health-insurance/Information/Star%20Health/SuperStar/Prospectus_SuperStar.pdf" target="_blank" rel="noopener">prospectus</a> · <a href="https://www.tataaig.com/s3/tata_aig_medicare_select_rate_chart_final_10b44c2d1c.pdf" target="_blank" rel="noopener">Tata AIG MediCare Select rate chart</a> (Zone B, ages 31 &amp; 33, floater + young-family discounts) · Niva Bupa, Care and Aditya Birla figures are published sample quotes from Ditto; others need a quote. Individual health insurance carries 0% GST from 22 Sep 2025.</li>
     <li>Bajaj My Health Care Plan 1: comparison image shared by the requester, partly verified.</li>
   </ol></section>
   <p class="foot">Research to help compare, not insurance advice. The policy wording and your policy schedule are final. Premiums are illustrative Delhi quotes; get a live Hyderabad quote for exact ages.</p>
@@ -289,6 +308,12 @@ const SIS=[5,10,15,25,50,100];
 const L=1e5, fm=n=>n>=1e7?'₹'+(n/1e7)+' Cr':n>=L?'₹'+(+(n/L).toFixed(2))+' L':'₹'+Math.round(n).toLocaleString('en-IN');
 const lbl=si=>si>=100?'₹1 Cr':'₹'+si+' L';
 const ID=PL.map(p=>p[0]);
+const LINK={niva:'https://www.nivabupa.com/family-health-insurance-plans/aspire.html',swc:'https://www.starhealth.in/health-insurance/women-care/',cuj:'https://www.careinsurance.com/product/ultimate-joy',abhi:'https://www.adityabirlacapital.com/healthinsurance/activ-one',ss:'https://www.starhealth.in/v2/health-insurance/super-star/',icici:'https://www.icicilombard.com/health-insurance/elevate-health-plan',tata:'https://www.tataaig.com/health-insurance/medicare-select',hdfc:'https://www.hdfcergo.com/promotions/health-insurance/optima-secure-plus.html',joy:'https://www.careinsurance.com/product/joy',bajaj:'https://www.bajajgeneralinsurance.com/health-insurance-plans/my-health-care-plan.html'};
+const ext='<svg class="i" viewBox="0 0 24 24" style="width:12px;height:12px"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>';
+document.getElementById('linkrow').innerHTML=PL.map(p=>`<a href="${LINK[p[0]]}" target="_blank" rel="noopener">${p[1]} ${p[2]}${ext}</a>`).join('');
+const WAITM=si=>({niva:9,swc:si>=15?12:24,cuj:12,abhi:3,ss:12,icici:12,tata:12,hdfc:24,joy:9,bajaj:36});
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fromNow=m=>{const d=new Date();d.setDate(1);d.setMonth(d.getMonth()+m);return MON[d.getMonth()]+' '+d.getFullYear()};
 function nivaM(si){return si<5?4000:si<7.5?5000:si<10?10000:si<15?12000:si<20?15000:si<50?20000:25000}
 function swcDel(si){return si<10?25000:si<25?50000:si<100?75000:100000}
 /* ---- premiums (couple, Hyderabad, 0% GST on individual health cover) ---- */
@@ -337,6 +362,10 @@ function calc(si){
 function rowsFor(si){
  const S=si*L, d=JSON.parse(JSON.stringify(D)).filter(r=>!(r[0]==='§'&&r[1]==='Cost')&&r[0]!=='Premium'), R=Object.fromEntries(d.filter(r=>r[0]!=='§').map(r=>[r[0],r[3]]));
  const cuj=Math.min(.05*S,3e5), mat10=Math.min(.1*S,1e5), C=calc(si);
+ {const wi=d.findIndex(r=>r[0]==='Waiting period'), W=WAITM(si);
+  d[wi][2]='counted from policy start';
+  d.splice(wi+1,0,['Delivery covered from','cal','if you buy this month',ID.map(id=>{const m=W[id];return [fromNow(m),m<=12?'g':m<=24?'':'b',(id==='cuj'||id==='icici'||id==='tata')?'with 12-month add-on':(id==='ss'?'Option B':'')]})],
+   ['If already pregnant','baby','when you buy',ID.map(id=>id==='swc'?['Baby only','a','buy at 12–20 weeks with scans']:id==='ss'?['Baby only','a','Women Care option, 12–20 week scans']:['Not covered','b','buy before conceiving'])]);}
  R['Waiting period'][1]= si>=15?['12 months','g','with ₹15 L+ cover']:['24 months','b','12 months needs ₹15 L+ cover'];
  const del=R['Policy pays for delivery'];
  del[0]=[fm(nivaM(si)),'b','grows if unused']; del[1]=[fm(swcDel(si)),'g']; del[2]=[fm(cuj),'g','5% of cover (max ₹3 L)'];
@@ -376,7 +405,7 @@ function renderChart(){
  const si=SI||15, {rows,C}=rowsFor(si);
  const order=SI?ID.slice().sort((a,b)=>C[b].score-C[a].score):ID.slice();
  const ix=order.map(id=>ID.indexOf(id)); COLS=ix.map(i=>PL[i]);
- let h='<thead><tr><th class="fcol fh">Features<span class="in" style="margin-top:4px">'+(SI?'at '+lbl(si)+' cover':'showing ₹15 L')+'</span></th>'+ix.map((i,k)=>{const p=PL[i],q=prem(p[0],si),pk=SI&&k===0;return `<th class="${pk?'pick':''}"><span class="in">${pk?'Our pick · ':SI?'#'+(k+1)+' · ':''}${p[1]}</span>${p[2]}<span class="hp">${q.t}</span><span class="hs">Score ${C[p[0]].score}</span></th>`}).join('')+'</tr></thead><tbody>';
+ let h='<thead><tr><th class="fcol fh">Features<span class="in" style="margin-top:4px">'+(SI?'at '+lbl(si)+' cover':'showing ₹15 L')+'</span></th>'+ix.map((i,k)=>{const p=PL[i],q=prem(p[0],si),pk=SI&&k===0;return `<th class="${pk?'pick':''}"><span class="in">${pk?'Our pick · ':SI?'#'+(k+1)+' · ':''}${p[1]}</span>${p[2]}<span class="hp">${q.t}</span><span class="hs">Score ${C[p[0]].score}</span><br><a class="site" href="${LINK[p[0]]}" target="_blank" rel="noopener">Official site</a></th>`}).join('')+'</tr></thead><tbody>';
  for(const r of rows){
   if(r[0]==='§'){h+=`<tr class="sec"><td class="fcol">${r[1]}</td><td colspan="${PL.length}"></td></tr>`;continue}
   h+=`<tr><td class="fcol"><div class="fwrap"><span class="ficon">${svg(IC[r[1]])}</span><span>${r[0]}${r[2]?`<small>${r[2]}</small>`:''}</span></div></td>`+ix.map((i,k)=>`<td class="${SI&&k===0?'pk ':''}num">${cell(r[3][i])}</td>`).join('')+'</tr>';
