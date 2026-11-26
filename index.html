@@ -117,6 +117,13 @@ td.num .v{font-variant-numeric:tabular-nums}
 :root:not(.m) thead th.fcol{z-index:5}
 thead th:first-child{border-top-left-radius:13px} thead th:last-child{border-top-right-radius:13px}
 .m thead th:first-child,.m thead th:last-child{border-radius:0}
+/* sum insured picker */
+.sipick{margin-top:16px;display:flex;flex-direction:column;gap:6px}
+.silbl{font-size:.74rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.siopts{display:flex;flex-wrap:wrap;gap:6px}
+.siopts button{border:1.5px solid var(--line);background:var(--card);color:var(--fg);border-radius:10px;padding:8px 14px;font-weight:700;font-size:.92rem;cursor:pointer;font-variant-numeric:tabular-nums}
+.siopts button[aria-pressed="true"]{background:var(--head);border-color:var(--head);color:var(--head-fg)}
+.sitag{font-weight:700;color:var(--fg)}
 /* swipe strip */
 .swipebar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--barh,52px));z-index:15;background:var(--bg);display:flex;align-items:center;gap:10px;padding-block:8px}
 .swipebar[hidden]{display:none!important}
@@ -156,15 +163,16 @@ thead th:first-child{border-top-left-radius:13px} thead th:last-child{border-top
     <div>
       <h1>Maternity, Newborn &amp; OPD Cover Comparison</h1>
       <p class="sub">10 Indian health insurance plans compared for a couple in Hyderabad (woman 31 + husband) planning a baby in the next 1–2 years, with no employer cover. Built from insurer brochures, policy wordings, IRDAI-based claim data and insurer network lists.</p>
-      <div class="chips"><span class="chip">₹15 lakh family floater assumed</span><span class="chip">Hyderabad, Telangana</span><span class="chip">Researched Nov 2026</span></div>
+      <div class="sipick" role="group" aria-label="Sum insured"><span class="silbl">Sum insured (cover)</span><div class="siopts" id="siopts"></div></div>
+      <div class="chips"><span class="chip">Family floater</span><span class="chip">Hyderabad, Telangana</span><span class="chip">Researched Nov 2026</span></div>
     </div>
     <aside class="pickbox">
       <span class="k">Our pick</span>
       <h2>Niva Bupa Aspire Platinum+</h2>
       <ul>
         <li>Shortest wait among full health plans: <b>9 months</b></li>
-        <li>Baby covered from day 1 up to the <b>full ₹15 lakh</b>, incl. NICU</li>
-        <li>Policy pays only ₹15,000 towards the delivery bill: keep ₹1–1.5 lakh aside</li>
+        <li>Baby covered from day 1 up to the <b>full <span class="siv">₹15 L</span></b>, incl. NICU</li>
+        <li>Policy pays only <span id="nivadel">₹15,000</span> towards the delivery bill: keep ₹1–1.5 lakh aside</li>
       </ul>
       <p class="alts"><b>Also strong:</b> Star Women Care for doctor visits for mother &amp; child · Aditya Birla Activ One Maternity if pregnancy is under 9 months away.</p>
     </aside>
@@ -270,15 +278,64 @@ const D=[
  ['Complaints','msg','per 10,000 claims',[['37',''],['54','b'],['43','b'],['18','g'],['54','b'],['11','g'],['11','g'],['9','g'],['43','b'],['5','g']]],
  ['§','Cost'],
  ['Premium','wallet','couple ~31–32, ₹15 L',[['₹26,240 / yr',''],['₹17,536 / yr','g'],['₹19,466 / yr','a','+ 12-month add-on'],['≈ ₹88k / 3 yrs','b','paid upfront'],['₹29,032 / yr',''],['On quote',''],['₹16,491 / yr','a','+ maternity add-on'],['Base + ₹13k–47k','a','rider cost'],['≈ ₹54k / 3 yrs','b','₹3 L cover'],['On quote','']]],
- ['You pay (example)','calc','C-section ₹1.5 L + 7 days NICU ₹1.05 L',[['₹1,35,000',''],['₹1,00,000',''],['₹1,80,000','b'],['₹55,000','g'],['₹1,20,000',''],['₹50,000','g'],['₹1,55,000','b'],['₹1,55,000','b'],['₹1,55,000','b'],['₹2,05,000','b','baby cover unknown']]]
+ ['You pay (example)','calc','bill: C-section ₹1.5 L + 7 days NICU ₹1.05 L',[['₹1,35,000',''],['₹1,00,000',''],['₹1,80,000','b'],['₹55,000','g'],['₹1,20,000',''],['₹50,000','g'],['₹1,55,000','b'],['₹1,55,000','b'],['₹1,55,000','b'],['₹2,05,000','b','baby cover unknown']]]
 ];
 const cell=(v)=>{const t=v[1]==='u'?'u':v[1];const m=MK[t];return `<div class="cell">${m?`<span class="mk ${m[0]}">${svg(m[1],'')}</span>`:''}<span class="v">${v[0]}</span>${v[2]?`<span class="n">${v[2]}</span>`:''}</div>`};
-let h='<thead><tr><th class="fcol fh">Features</th>'+PL.map((p,i)=>`<th class="${i===0?'pick':''}"><span class="in">${i===0?'Our pick · ':''}${p[1]}</span>${p[2]}</th>`).join('')+'</tr></thead><tbody>';
-for(const r of D){
- if(r[0]==='§'){h+=`<tr class="sec"><td class="fcol">${r[1]}</td><td colspan="${PL.length}"></td></tr>`;continue}
- h+=`<tr><td class="fcol"><div class="fwrap"><span class="ficon">${svg(IC[r[1]])}</span><span>${r[0]}${r[2]?`<small>${r[2]}</small>`:''}</span></div></td>`+r[3].map((v,i)=>`<td class="${i===0?'pk ':''}num">${cell(v)}</td>`).join('')+'</tr>';
+const SIS=[5,10,15,25,50,100];
+const L=1e5, fm=n=>n>=1e7?'₹'+(n/1e7)+' Cr':n>=L?'₹'+(+(n/L).toFixed(2))+' L':'₹'+Math.round(n).toLocaleString('en-IN');
+const lbl=si=>si>=100?'₹1 Cr':'₹'+si+' L';
+function nivaM(si){return si<5?4000:si<7.5?5000:si<10?10000:si<15?12000:si<20?15000:si<50?20000:25000}
+function swcDel(si){return si<10?25000:si<25?50000:si<100?75000:100000}
+function rowsFor(si){
+ const S=si*L, d=JSON.parse(JSON.stringify(D)), R=Object.fromEntries(d.filter(r=>r[0]!=='§').map(r=>[r[0],r[3]]));
+ const cuj=Math.min(.05*S,3e5), mat10=Math.min(.1*S,1e5), joyS=Math.min(S,5*L), joyCap=joyS>=5*L?50000:35000, joyNb=joyS>=5*L?50000:30000;
+ const w=R['Waiting period']; w[1]= si>=15?['12 months','g','with ₹15 L+ cover']:['24 months','b','12 months needs ₹15 L+ cover'];
+ const del=R['Policy pays for delivery'];
+ del[0]=[fm(nivaM(si)),'b','grows if unused'];
+ del[1]=[fm(swcDel(si)),'g'];
+ del[2]=[fm(cuj),'g','5% of cover (max ₹3 L)'];
+ del[5]=[fm(mat10),'g','10% of cover, max ₹1 L'];
+ del[6]=[fm(mat10),'','shared with baby'];
+ del[8]=[fm(joyCap),'',si>5?'plan max cover is ₹5 L':''];
+ R['Pre & post-natal'][1]=['Included','g','+ '+(si>=20?'₹5,000':'₹2,500')+' check-ups'];
+ const nb=R['Newborn & NICU'];
+ nb[0]=['Full '+fm(S),'g','from day 1'];
+ nb[1]=[fm(.25*S),'g','25% of cover, day 1'];
+ nb[2]=['Within '+fm(cuj),'b','90 days, shared'];
+ nb[4]=[si>=50?'₹5 L':'₹2 L','g','from day 1'];
+ nb[5]=['Up to '+fm(Math.min(2e5,2*mat10)),'a','rider'];
+ nb[8]=[fm(joyNb),'b','90 days'];
+ R['Vaccinations'][1]=[si>=15?'₹3,500':'₹2,500','g','+ screening ₹3,500'];
+ R['Mother'][1]=[si>=50?'₹5,000 / yr':si>=20?'₹3,500 / yr':'₹2,500 / yr','g','+ unlimited tele-gynae'];
+ R['Room rent'][1]= si<10?['1% of cover / day','b']: si<50?['Any except suite','']:['Any room','g'];
+ R['IVF / fertility'][4]=['Add-on','a',(si>=50?'₹4 L':si>=10?'₹2 L':'₹1 L')+' a year'];
+ if(si>5) R['Sum insured'][8]=['₹3 – 5 L','b','cannot go above ₹5 L'];
+ R['Premium'].forEach((v,i)=>{ if(si!==15 && !/quote/i.test(v[0])) v[2]=(v[2]?v[2]+' · ':'')+'quote is for ₹15 L'; });
+ // example bill
+ const dl=150000, nic=105000, m=Math.min;
+ const pay=[m(dl,nivaM(si))+m(nic,S), m(dl,swcDel(si))+m(nic,.25*S), m(dl+nic,cuj), m(dl,1e5)+m(nic,1e5), m(dl,30000)+m(nic,si>=50?5e5:2e5), m(dl,mat10)+m(nic,m(2e5,2*mat10)), m(dl+nic,mat10), m(dl,1e5), m(dl,joyCap)+m(nic,joyNb), m(dl,50000)];
+ R['You pay (example)'].forEach((v,i)=>{const you=dl+nic-pay[i]; R['You pay (example)'][i]=[fm(you).replace(/ L$/,' L'), you<=60000?'g':you>=150000?'b':'', i===4?'Option B plan':i===9?'baby cover unknown':i===3?'₹1 L + ₹1 L options':''];});
+ d.forEach(r=>{if(r[0]==='Premium')r[2]='couple ~31–32';});
+ return d;
 }
-document.getElementById('chart').innerHTML=h+'</tbody>';
+let SI=15; try{const x=+localStorage.getItem('mc-si'); if(SIS.includes(x)) SI=x;}catch(e){}
+function renderChart(){
+ const rows=rowsFor(SI);
+ let h='<thead><tr><th class="fcol fh">Features<span class="in" style="margin-top:4px">at '+lbl(SI)+' cover</span></th>'+PL.map((p,i)=>`<th class="${i===0?'pick':''}"><span class="in">${i===0?'Our pick · ':''}${p[1]}</span>${p[2]}</th>`).join('')+'</tr></thead><tbody>';
+ for(const r of rows){
+  if(r[0]==='§'){h+=`<tr class="sec"><td class="fcol">${r[1]}</td><td colspan="${PL.length}"></td></tr>`;continue}
+  h+=`<tr><td class="fcol"><div class="fwrap"><span class="ficon">${svg(IC[r[1]])}</span><span>${r[0]}${r[2]?`<small>${r[2]}</small>`:''}</span></div></td>`+r[3].map((v,i)=>`<td class="${i===0?'pk ':''}num">${cell(v)}</td>`).join('')+'</tr>';
+ }
+ const cs=document.getElementById('cs'), keep=cs?cs.scrollLeft:0;
+ document.getElementById('chart').innerHTML=h+'</tbody>';
+ if(cs) cs.scrollLeft=keep;
+ document.getElementById('siopts').innerHTML=SIS.map(v=>`<button type="button" data-si="${v}" aria-pressed="${v===SI}">${lbl(v)}</button>`).join('');
+ document.querySelectorAll('.siv').forEach(e=>e.textContent=lbl(SI));
+ const nd=document.getElementById('nivadel'); if(nd) nd.textContent=fm(nivaM(SI));
+ if(typeof updSwipe==='function') requestAnimationFrame(updSwipe);
+}
+document.getElementById('siopts').addEventListener('click',e=>{const b=e.target.closest('button[data-si]');if(!b)return;SI=+b.dataset.si;try{localStorage.setItem('mc-si',SI)}catch(err){};renderChart();});
+renderChart();
 document.getElementById('legend').innerHTML=[['g','Strong'],['a','Paid add-on'],['b','Weak / not covered'],['u','Not stated — ask insurer']].map(([t,l])=>`<span><span class="mk ${MK[t][0]}">${svg(MK[t][1],'')}</span>${l}</span>`).join('');
 // theme
 const btns=[...document.querySelectorAll('.theme button[data-t]')];
