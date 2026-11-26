@@ -124,6 +124,18 @@ thead th:first-child{border-top-left-radius:13px} thead th:last-child{border-top
 .siopts button{border:1.5px solid var(--line);background:var(--card);color:var(--fg);border-radius:10px;padding:8px 14px;font-weight:700;font-size:.92rem;cursor:pointer;font-variant-numeric:tabular-nums}
 .siopts button[aria-pressed="true"]{background:var(--head);border-color:var(--head);color:var(--head-fg)}
 .sitag{font-weight:700;color:var(--fg)}
+.pickbox .score{display:inline-block;font-family:var(--display);font-weight:800;font-size:.8rem;background:var(--pick-tint);color:var(--fg);border-radius:6px;padding:2px 8px;margin-left:6px;vertical-align:2px}
+.pickbox .prem{font-family:var(--display);font-weight:800;font-size:1.05rem}
+.pickbox .how{font-size:.76rem;color:var(--muted);border-top:1px solid var(--line);padding-top:8px}
+.pickbox .runners{display:flex;flex-direction:column;gap:4px;font-size:.84rem}
+.pickbox .runners div{display:flex;justify-content:space-between;gap:8px}
+.step{display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--head-fg);background:var(--head);border-radius:6px;padding:2px 8px}
+thead th .hp{display:block;font-family:var(--body);font-weight:700;font-size:.78rem;margin-top:5px;opacity:.95}
+thead th .hs{display:inline-block;margin-top:4px;font-family:var(--body);font-weight:700;font-size:.68rem;background:rgba(255,255,255,.18);border-radius:999px;padding:1px 7px}
+thead th.pick .hs{background:rgba(0,0,0,.12)}
+.sinote{font-size:.8rem;color:var(--muted)}
+.sipick.need .siopts button{animation:pulse 1.8s ease-in-out 2}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 transparent}50%{box-shadow:0 0 0 4px var(--sec)}}
 /* swipe strip */
 .swipebar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--barh,52px));z-index:15;background:var(--bg);display:flex;align-items:center;gap:10px;padding-block:8px}
 .swipebar[hidden]{display:none!important}
@@ -163,19 +175,10 @@ thead th:first-child{border-top-left-radius:13px} thead th:last-child{border-top
     <div>
       <h1>Maternity, Newborn &amp; OPD Cover Comparison</h1>
       <p class="sub">10 Indian health insurance plans compared for a couple in Hyderabad (woman 31 + husband) planning a baby in the next 1–2 years, with no employer cover. Built from insurer brochures, policy wordings, IRDAI-based claim data and insurer network lists.</p>
-      <div class="sipick" role="group" aria-label="Sum insured"><span class="silbl">Sum insured (cover)</span><div class="siopts" id="siopts"></div></div>
-      <div class="chips"><span class="chip">Family floater</span><span class="chip">Hyderabad, Telangana</span><span class="chip">Researched Nov 2026</span></div>
+      <div class="sipick" role="group" aria-label="Sum insured"><span class="silbl"><span class="step">Step 1</span> Choose sum insured (cover)</span><div class="siopts" id="siopts"></div></div>
+      <div class="chips"><span class="chip">Family floater · woman 31 + husband (31–35)</span><span class="chip">Hyderabad, Telangana</span><span class="chip">Researched Nov 2026</span></div>
     </div>
-    <aside class="pickbox">
-      <span class="k">Our pick</span>
-      <h2>Niva Bupa Aspire Platinum+</h2>
-      <ul>
-        <li>Shortest wait among full health plans: <b>9 months</b></li>
-        <li>Baby covered from day 1 up to the <b>full <span class="siv">₹15 L</span></b>, incl. NICU</li>
-        <li>Policy pays only <span id="nivadel">₹15,000</span> towards the delivery bill: keep ₹1–1.5 lakh aside</li>
-      </ul>
-      <p class="alts"><b>Also strong:</b> Star Women Care for doctor visits for mother &amp; child · Aditya Birla Activ One Maternity if pregnancy is under 9 months away.</p>
-    </aside>
+    <aside class="pickbox" id="pickbox" aria-live="polite"></aside>
   </section>
 
   <div class="legend" id="legend"></div>
@@ -214,6 +217,7 @@ thead th:first-child{border-top-left-radius:13px} thead th:last-child{border-top
     <li>Aditya Birla maternity rider: <a href="https://healthstatic.policybazaar.com/health-insurance/Insurer_Document/ABHI/ActivOneMaternityCombo_Policywording.pdf" target="_blank" rel="noopener">policy wording</a></li>
     <li>ICICI, HDFC ERGO, Tata AIG maternity: <a href="https://joinditto.in/articles/health-insurance/popular-maternity-add-ons/" target="_blank" rel="noopener">Ditto</a> · <a href="https://healthstatic.policybazaar.com/health-insurance/Information/TATA-AIG/MediCare%20Select_Brochure.pdf" target="_blank" rel="noopener">Tata AIG brochure</a></li>
     <li>Claim data: <a href="https://joinditto.in/health-insurance/top-10-claim-settlement-ratio-health-insurance-companies/" target="_blank" rel="noopener">Ditto CSR ranking</a> (from IRDAI reports) · Hospital counts: insurer network lists Aug–Nov 2026 (<a href="https://healthstatic.policybazaar.com/health-insurance/Network_Lists/Niva_Bupa(Max)_Health_2026.pdf" target="_blank" rel="noopener">example</a>)</li>
+    <li>Premiums: Star Women Care rate chart in its <a href="https://healthstatic.policybazaar.com/health-insurance/Information/Star%20Health/Women%20Care%20Prospectus.pdf" target="_blank" rel="noopener">prospectus</a> (2 adults 18–35) · Star Super Star Zone B (Hyderabad) rates and maternity add-on in its <a href="https://healthstatic.policybazaar.com/health-insurance/Information/Star%20Health/SuperStar/Prospectus_SuperStar.pdf" target="_blank" rel="noopener">prospectus</a> · <a href="https://www.tataaig.com/s3/tata_aig_medicare_select_rate_chart_final_10b44c2d1c.pdf" target="_blank" rel="noopener">Tata AIG MediCare Select rate chart</a> (Zone B, ages 31 &amp; 33, floater + young-family discounts) · Niva Bupa, Care and Aditya Birla figures are published sample quotes from Ditto; others need a quote. Individual health insurance carries 0% GST from 22 Sep 2025.</li>
     <li>Bajaj My Health Care Plan 1: comparison image shared by the requester, partly verified.</li>
   </ol></section>
   <p class="foot">Research to help compare, not insurance advice. The policy wording and your policy schedule are final. Premiums are illustrative Delhi quotes; get a live Hyderabad quote for exact ages.</p>
@@ -284,54 +288,105 @@ const cell=(v)=>{const t=v[1]==='u'?'u':v[1];const m=MK[t];return `<div class="c
 const SIS=[5,10,15,25,50,100];
 const L=1e5, fm=n=>n>=1e7?'₹'+(n/1e7)+' Cr':n>=L?'₹'+(+(n/L).toFixed(2))+' L':'₹'+Math.round(n).toLocaleString('en-IN');
 const lbl=si=>si>=100?'₹1 Cr':'₹'+si+' L';
+const ID=PL.map(p=>p[0]);
 function nivaM(si){return si<5?4000:si<7.5?5000:si<10?10000:si<15?12000:si<20?15000:si<50?20000:25000}
 function swcDel(si){return si<10?25000:si<25?50000:si<100?75000:100000}
+/* ---- premiums (couple, Hyderabad, 0% GST on individual health cover) ---- */
+const PREM={
+ swc:{5:11735,10:15265,15:18460,25:23070,50:27660,100:33855},          // Star Women Care rate chart, 2 adults 18-35
+ ss:{5:26027,10:27711,15:29675,25:31679,50:36595,100:38035},           // Super Star Zone B 2x adult 31-35 + Option B maternity & newborn
+ tata:{5:11686,10:12814,15:14446,25:16789,50:20246,100:24939},         // MediCare Select Zone B ages 31 & 33, 22% floater + 10% young family
+ cuj:{15:19466,25:25050,50:33303},                                     // Ditto quote, ages 35 & 35, Delhi
+ niva:{15:24930}                                                      // Ditto quote, ages 31 & 32, Delhi
+};
+function prem(id,si){
+ const v=PREM[id]&&PREM[id][si];
+ switch(id){
+  case 'swc': return {n:v,t:fm(v)+' / yr',note:'insurer rate chart',tone:'g'};
+  case 'ss': return {n:v,t:fm(v)+' / yr',note:'rate chart; incl. ₹'+(si>25?'20,395':'17,781')+' maternity & newborn',tone:''};
+  case 'tata': return {n:v,t:fm(v)+' / yr',note:'base only; + maternity add-on (quote)',tone:'a'};
+  case 'cuj': return v?{n:v,t:'≈ '+fm(v)+' / yr',note:'+ 12-month add-on (quote); sample quote',tone:'a'}:{t:'Get a quote',note:'not published for '+lbl(si),tone:'u'};
+  case 'niva': return v?{n:v,t:'≈ '+fm(v)+' / yr',note:'sample quote, ages 31–32',tone:''}:{t:'Get a quote',note:'not published for '+lbl(si),tone:'u'};
+  case 'abhi': return {n:29353,t:'≈ ₹29,353 / yr',note:'fixed ₹1 Cr combo; ₹88,058 paid for 3 yrs upfront',tone:'b'};
+  case 'joy': return {n:18100,t:'≈ ₹18,100 / yr',note:'woman only, ₹3 L, 3-yr policy',tone:''};
+  case 'hdfc': return {t:'Base: quote',note:'+ ₹13,300/yr Parenthood rider (₹50k)',tone:'a'};
+  default: return {t:'Get a quote',note:'not published',tone:'u'};
+ }
+}
+/* ---- scoring ---- */
+const CSR={niva:92.9,swc:88.6,cuj:95.5,abhi:96.3,ss:88.6,icici:84.5,tata:88.9,hdfc:97.6,joy:95.5,bajaj:95.6};
+const CMP={niva:37,swc:54,cuj:43,abhi:18,ss:54,icici:11,tata:11,hdfc:9,joy:43,bajaj:5};
+const OPD={swc:10,bajaj:8,niva:5,abhi:5,tata:4,ss:3};
+const EXTRA={niva:2,swc:2,cuj:1.5,ss:1.5,icici:.5,tata:.5,hdfc:.5};
+const BILL={del:150000,nicu:105000};
+function calc(si){
+ const S=si*L,m=Math.min,cuj=m(.05*S,3e5),mat10=m(.1*S,1e5),joyCap=50000,joyNb=50000,dl=BILL.del,nic=BILL.nicu;
+ const pay={niva:m(dl,nivaM(si))+m(nic,S),swc:m(dl,swcDel(si))+m(nic,.25*S),cuj:m(dl+nic,cuj),abhi:m(dl,1e5)+m(nic,1e5),ss:m(dl,30000)+m(nic,si>=50?5e5:2e5),icici:m(dl,mat10)+m(nic,m(2e5,2*mat10)),tata:m(dl+nic,mat10),hdfc:m(dl,1e5),joy:m(dl,joyCap)+m(nic,joyNb),bajaj:m(dl,50000)};
+ const nb={niva:S,swc:.25*S,cuj:cuj,abhi:2e5,ss:si>=50?5e5:2e5,icici:m(2e5,2*mat10),tata:.3*mat10,hdfc:0,joy:joyNb,bajaj:0};
+ const wait={niva:[25,'9 months'],swc:si>=15?[22,'12 months']:[10,'24 months below ₹15 L'],cuj:[20,'12 months with paid add-on'],abhi:[25,'3 months'],ss:[22,'12 months (Option B)'],icici:[18,'1 year with paid add-on'],tata:[18,'1 year with paid add-on'],hdfc:[10,'2 years'],joy:[25,'9 months'],bajaj:[0,'3 years']};
+ const out={};
+ for(const id of ID){
+  const parts={pay:30*pay[id]/(dl+nic), wait:wait[id][0], nb:20*Math.min(nb[id],5e5)/5e5, opd:OPD[id]||0,
+   claim:7*Math.max(0,Math.min(1,(CSR[id]-84)/14))+3*(1-Math.min(CMP[id],55)/55), extra:(EXTRA[id]||0)*5/3};
+  let tot=Object.values(parts).reduce((x,y)=>x+y,0); if(id==='joy'&&si>5) tot-=8;
+  out[id]={score:Math.round(tot),parts,pay:pay[id],nb:nb[id],wait:wait[id][1],you:dl+nic-pay[id]};
+ }
+ return out;
+}
+/* ---- per-SI cell overrides ---- */
 function rowsFor(si){
- const S=si*L, d=JSON.parse(JSON.stringify(D)), R=Object.fromEntries(d.filter(r=>r[0]!=='§').map(r=>[r[0],r[3]]));
- const cuj=Math.min(.05*S,3e5), mat10=Math.min(.1*S,1e5), joyS=Math.min(S,5*L), joyCap=joyS>=5*L?50000:35000, joyNb=joyS>=5*L?50000:30000;
- const w=R['Waiting period']; w[1]= si>=15?['12 months','g','with ₹15 L+ cover']:['24 months','b','12 months needs ₹15 L+ cover'];
+ const S=si*L, d=JSON.parse(JSON.stringify(D)).filter(r=>!(r[0]==='§'&&r[1]==='Cost')&&r[0]!=='Premium'), R=Object.fromEntries(d.filter(r=>r[0]!=='§').map(r=>[r[0],r[3]]));
+ const cuj=Math.min(.05*S,3e5), mat10=Math.min(.1*S,1e5), C=calc(si);
+ R['Waiting period'][1]= si>=15?['12 months','g','with ₹15 L+ cover']:['24 months','b','12 months needs ₹15 L+ cover'];
  const del=R['Policy pays for delivery'];
- del[0]=[fm(nivaM(si)),'b','grows if unused'];
- del[1]=[fm(swcDel(si)),'g'];
- del[2]=[fm(cuj),'g','5% of cover (max ₹3 L)'];
- del[5]=[fm(mat10),'g','10% of cover, max ₹1 L'];
- del[6]=[fm(mat10),'','shared with baby'];
- del[8]=[fm(joyCap),'',si>5?'plan max cover is ₹5 L':''];
+ del[0]=[fm(nivaM(si)),'b','grows if unused']; del[1]=[fm(swcDel(si)),'g']; del[2]=[fm(cuj),'g','5% of cover (max ₹3 L)'];
+ del[5]=[fm(mat10),'g','10% of cover, max ₹1 L']; del[6]=[fm(mat10),'','shared with baby']; del[8]=['₹50,000','',si>5?'plan max cover is ₹5 L':''];
  R['Pre & post-natal'][1]=['Included','g','+ '+(si>=20?'₹5,000':'₹2,500')+' check-ups'];
  const nb=R['Newborn & NICU'];
- nb[0]=['Full '+fm(S),'g','from day 1'];
- nb[1]=[fm(.25*S),'g','25% of cover, day 1'];
- nb[2]=['Within '+fm(cuj),'b','90 days, shared'];
- nb[4]=[si>=50?'₹5 L':'₹2 L','g','from day 1'];
- nb[5]=['Up to '+fm(Math.min(2e5,2*mat10)),'a','rider'];
- nb[8]=[fm(joyNb),'b','90 days'];
+ nb[0]=['Full '+fm(S),'g','from day 1']; nb[1]=[fm(.25*S),'g','25% of cover, day 1']; nb[2]=['Within '+fm(cuj),'b','90 days, shared'];
+ nb[4]=[si>=50?'₹5 L':'₹2 L','g','from day 1']; nb[5]=['Up to '+fm(Math.min(2e5,2*mat10)),'a','rider'];
  R['Vaccinations'][1]=[si>=15?'₹3,500':'₹2,500','g','+ screening ₹3,500'];
  R['Mother'][1]=[si>=50?'₹5,000 / yr':si>=20?'₹3,500 / yr':'₹2,500 / yr','g','+ unlimited tele-gynae'];
  R['Room rent'][1]= si<10?['1% of cover / day','b']: si<50?['Any except suite','']:['Any room','g'];
  R['IVF / fertility'][4]=['Add-on','a',(si>=50?'₹4 L':si>=10?'₹2 L':'₹1 L')+' a year'];
  if(si>5) R['Sum insured'][8]=['₹3 – 5 L','b','cannot go above ₹5 L'];
- R['Premium'].forEach((v,i)=>{ if(si!==15 && !/quote/i.test(v[0])) v[2]=(v[2]?v[2]+' · ':'')+'quote is for ₹15 L'; });
- // example bill
- const dl=150000, nic=105000, m=Math.min;
- const pay=[m(dl,nivaM(si))+m(nic,S), m(dl,swcDel(si))+m(nic,.25*S), m(dl+nic,cuj), m(dl,1e5)+m(nic,1e5), m(dl,30000)+m(nic,si>=50?5e5:2e5), m(dl,mat10)+m(nic,m(2e5,2*mat10)), m(dl+nic,mat10), m(dl,1e5), m(dl,joyCap)+m(nic,joyNb), m(dl,50000)];
- R['You pay (example)'].forEach((v,i)=>{const you=dl+nic-pay[i]; R['You pay (example)'][i]=[fm(you).replace(/ L$/,' L'), you<=60000?'g':you>=150000?'b':'', i===4?'Option B plan':i===9?'baby cover unknown':i===3?'₹1 L + ₹1 L options':''];});
- d.forEach(r=>{if(r[0]==='Premium')r[2]='couple ~31–32';});
- return d;
+ R['Sum insured'][3]=['Fixed ₹1 Cr','','₹15 L base + top-up'];
+ R['You pay (example)'].forEach((v,i)=>{const id=ID[i],y=C[id].you;R['You pay (example)'][i]=[fm(y),y<=60000?'g':y>=150000?'b':'',(id==='ss'?'Option B · ':'')+'policy pays '+fm(C[id].pay)];});
+ // premium + score rows up front
+ const pr=ID.map(id=>{const q=prem(id,si);return [q.t,q.tone,q.note]});
+ const sc=ID.map(id=>[C[id].score+' / 100',C[id].score>=65?'g':C[id].score<40?'b':'']);
+ d.unshift(['§','Price & our score'],['Premium you pay','wallet','per year, couple',pr],['Our score','check','cover, wait, baby, OPD, claims',sc]);
+ return {rows:d,C};
 }
-let SI=15; try{const x=+localStorage.getItem('mc-si'); if(SIS.includes(x)) SI=x;}catch(e){}
+let SI=null; try{const x=+localStorage.getItem('mc-si'); if(SIS.includes(x)) SI=x;}catch(e){}
+let COLS=PL.slice();
+function renderPick(si,C,order){
+ const box=document.getElementById('pickbox');
+ if(!si){box.innerHTML=`<span class="step">Step 1</span><h2>Choose your sum insured</h2><p style="font-size:.9rem">Pick a cover above. We’ll rank all 10 plans for that amount on how much they pay, waiting period, baby cover, doctor visits and claim record, then show our pick here.</p><p class="how">The chart below shows ₹15 L until you choose.</p>`;return}
+ const top=PL[ID.indexOf(order[0])],c=C[order[0]],q=prem(order[0],si);
+ const r=order.slice(1,4).map(id=>{const p=PL[ID.indexOf(id)];return `<div><span>${p[1]} ${p[2]}</span><b>${C[id].score}</b></div>`}).join('');
+ box.innerHTML=`<span class="k">Our pick for ${lbl(si)} cover</span>
+  <h2>${top[1]} ${top[2]}<span class="score">${c.score}/100</span></h2>
+  <div><span class="prem">${q.t}</span><div class="n" style="font-size:.78rem;color:var(--muted)">${q.note}</div></div>
+  <ul><li>Waiting period: <b>${c.wait}</b></li><li>Baby / NICU covered up to <b>${fm(c.nb)}</b></li><li>On a ₹2.55 L delivery + NICU bill the policy pays <b>${fm(c.pay)}</b>, you pay <b>${fm(c.you)}</b></li></ul>
+  <div class="runners"><span class="k" style="color:var(--muted)">Next best</span>${r}</div>
+  <p class="how">Score out of 100: money paid on a typical delivery + 7-day NICU bill (30), waiting period for a baby in 1–2 years (25), newborn/NICU limit (20), doctor visits for mother & child (10), claim record (10), IVF / birth defects / vaccines (5). Premium is shown, not scored.</p>`;
+}
 function renderChart(){
- const rows=rowsFor(SI);
- let h='<thead><tr><th class="fcol fh">Features<span class="in" style="margin-top:4px">at '+lbl(SI)+' cover</span></th>'+PL.map((p,i)=>`<th class="${i===0?'pick':''}"><span class="in">${i===0?'Our pick · ':''}${p[1]}</span>${p[2]}</th>`).join('')+'</tr></thead><tbody>';
+ const si=SI||15, {rows,C}=rowsFor(si);
+ const order=SI?ID.slice().sort((a,b)=>C[b].score-C[a].score):ID.slice();
+ const ix=order.map(id=>ID.indexOf(id)); COLS=ix.map(i=>PL[i]);
+ let h='<thead><tr><th class="fcol fh">Features<span class="in" style="margin-top:4px">'+(SI?'at '+lbl(si)+' cover':'showing ₹15 L')+'</span></th>'+ix.map((i,k)=>{const p=PL[i],q=prem(p[0],si),pk=SI&&k===0;return `<th class="${pk?'pick':''}"><span class="in">${pk?'Our pick · ':SI?'#'+(k+1)+' · ':''}${p[1]}</span>${p[2]}<span class="hp">${q.t}</span><span class="hs">Score ${C[p[0]].score}</span></th>`}).join('')+'</tr></thead><tbody>';
  for(const r of rows){
   if(r[0]==='§'){h+=`<tr class="sec"><td class="fcol">${r[1]}</td><td colspan="${PL.length}"></td></tr>`;continue}
-  h+=`<tr><td class="fcol"><div class="fwrap"><span class="ficon">${svg(IC[r[1]])}</span><span>${r[0]}${r[2]?`<small>${r[2]}</small>`:''}</span></div></td>`+r[3].map((v,i)=>`<td class="${i===0?'pk ':''}num">${cell(v)}</td>`).join('')+'</tr>';
+  h+=`<tr><td class="fcol"><div class="fwrap"><span class="ficon">${svg(IC[r[1]])}</span><span>${r[0]}${r[2]?`<small>${r[2]}</small>`:''}</span></div></td>`+ix.map((i,k)=>`<td class="${SI&&k===0?'pk ':''}num">${cell(r[3][i])}</td>`).join('')+'</tr>';
  }
- const cs=document.getElementById('cs'), keep=cs?cs.scrollLeft:0;
+ const cs=document.getElementById('cs');
  document.getElementById('chart').innerHTML=h+'</tbody>';
- if(cs) cs.scrollLeft=keep;
+ if(cs) cs.scrollLeft=0;
  document.getElementById('siopts').innerHTML=SIS.map(v=>`<button type="button" data-si="${v}" aria-pressed="${v===SI}">${lbl(v)}</button>`).join('');
- document.querySelectorAll('.siv').forEach(e=>e.textContent=lbl(SI));
- const nd=document.getElementById('nivadel'); if(nd) nd.textContent=fm(nivaM(SI));
+ document.querySelector('.sipick').classList.toggle('need',!SI);
+ renderPick(SI,C,order);
  if(typeof updSwipe==='function') requestAnimationFrame(updSwipe);
 }
 document.getElementById('siopts').addEventListener('click',e=>{const b=e.target.closest('button[data-si]');if(!b)return;SI=+b.dataset.si;try{localStorage.setItem('mc-si',SI)}catch(err){};renderChart();});
@@ -371,7 +426,7 @@ function updSwipe(){
   if(!over)return;
   const w=colW(), first=Math.round(cs.scrollLeft/w), n=Math.max(1,Math.floor((cs.clientWidth-fcW()+4)/w)), last=Math.min(PL.length,first+n);
   document.getElementById('swc').textContent=`Plans ${first+1}–${last} of ${PL.length}`+(last<PL.length?' · swipe for more':'');
-  document.getElementById('swn').textContent=PL.slice(first,last).map(p=>p[2]).join(' · ');
+  document.getElementById('swn').textContent=COLS.slice(first,last).map(p=>p[2]).join(' · ');
   [...dots.children].forEach((d,i)=>d.classList.toggle('on',i>=first&&i<last));
   prev.disabled=cs.scrollLeft<=2; next.disabled=cs.scrollLeft+cs.clientWidth>=cs.scrollWidth-2;
 }
